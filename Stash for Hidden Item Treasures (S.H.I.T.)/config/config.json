@@ -1,0 +1,74 @@
+{
+    "id": "Collectors_Case",
+    "item_name": "Stash for Hidden Item Treasures (S.H.I.T.)",
+    "item_short_name": "S.H.I.T. case",
+    "item_description": "Keep your hard-earned treasures safe and secure with 'S.H.I.T.,' the ultimate storage solution for any Tarkov collector. This custom-designed stash is specifically created to hold the rare and valuable items required for Fence's 'Collector' task, ensuring that your collection is always safe and organized. With custom-fit compartments for each item and a secure locking mechanism, 'S.H.I.T.' is the perfect way to keep your treasures hidden from prying eyes. Don't let your valuable items go unprotected - invest in 'S.H.I.T.' today!",
+
+    "trader": "therapist",
+    "trader_loyalty_level": 2,
+    "currency": "roubles",
+    "price": 500000,
+    "unlimited_stock": false,
+    "stock_amount": 1,
+
+    "allow_in_slots": [""],
+
+    "ExternalSize": {
+        "width": 6,
+        "height": 4
+    },
+
+    "InternalSize": {
+        "slots": [
+            "5bc9c377d4351e3bac12251b",
+            "5bc9c1e2d4351e00367fbcf0",
+            "5bc9c049d4351e44f824d360",
+            "5bc9b355d4351e6d1509862a",
+            "5bc9bc53d4351e00367fbcee",
+            "5bc9bdb8d4351e003562b8a1",
+            "5bc9b9ecd4351e3bac122519",
+            "5bc9b720d4351e450201234b",
+            "5bc9b156d4351e00367fbce9",
+            "5bc9c29cd4351e003562b8a3",
+            "5bd073a586f7747e6f135799",
+            "5bd073c986f7747f627e796c",
+            "5e54f6af86f7742199090bf3",
+            "5e54f79686f7744022011103",
+            "5e54f62086f774219b0f1937",
+            "5e54f76986f7740366043752",
+            "5f745ee30acaeb0d490d8c5b",
+            "5bc9be8fd4351e00334cae6e",
+            "5fd8d28367cb5e077335170f",
+            "60b0f988c4449e4cb624c1da",
+            "60b0f93284c20f0feb453da7",
+            "60b0f7057897d47c5b04ab94",
+            "60b0f6c058e0b0481a09ad11",
+            "60b0f561c4449e4cb624c1d7",
+            "62a09ec84f842e1bd12da3f2",
+            "62a09e974f842e1bd12da3f0",
+            "62a09e73af34e73a266d932a",
+            "62a09e410b9d3c46de5b6e78",
+            "62a09e08de7ac81993580532",
+            "62a09dd4621468534a797ac7",
+            "62a09d79de7ac81993580530",
+            "62a09d3bcf4a99369e262447",
+            "62a09cfe4f842e1bd12da3e4",
+            "62a09cb7a04c0c5c6e0a84f8",
+            "62a091170b9d3c46de5b6cf2",
+            "62a08f4c4f842e1bd12d9d62",
+            "59db794186f77448bc595262",
+            "5857a8bc2459772bad15db29"
+        ]
+    },
+
+    "allow_in_secure_containers": true,
+    "allow_in_backpacks": true,
+    "case_allowed_in": [""],
+    "case_disallowed_in": [""]
+
+
+
+
+
+
+}
