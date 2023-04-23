@@ -1,6 +1,6 @@
 {
-  "name": "Case Framework",
-  "version": "1.0.0",
+  "name": "Stash for Hidden Item Treasures (S.H.I.T.)",
+  "version": "1.0.2",
   "author": "Jiblet, LeKaiju, Orbitas, Duc Boi, Jehree, OrionAF",
   "license": "NCSA Open Source",
   "main": "src/mod.js",
