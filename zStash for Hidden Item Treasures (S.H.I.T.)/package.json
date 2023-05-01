@@ -1,6 +1,6 @@
 {
   "name": "Stash for Hidden Item Treasures (S.H.I.T.)",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Jiblet, LeKaiju, Orbitas, Duc Boi, Jehree, OrionAF",
   "license": "NCSA Open Source",
   "main": "src/mod.js",
