@@ -8,7 +8,6 @@ import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 
 import * as config from "../config/config.json";
-const logging = config.Logging;
 
 class Mod implements IPostAkiLoadMod, IPostDBLoadMod {
     logger: ILogger
@@ -36,6 +35,22 @@ class Mod implements IPostAkiLoadMod, IPostDBLoadMod {
         const itemID = config.id
         const itemPrefabPath = `${itemID}/case.bundle`
         const configSlots = config.InternalSize.slots;
+
+        //do a compatibility correction to make this mod work with other mods with destructive code (cough, SVM, cough)
+        //basically just add the filters element back to backpacks and secure containers if they've been removed by other mods
+        const compatFiltersElement = [{ "Filter": [BaseClasses.ITEM], "ExcludedFilter": [""] }];
+
+        for (let i in tables.templates.items){
+           if(
+                tables.templates.items[i]._parent === BaseClasses.BACKPACK ||
+                tables.templates.items[i]._parent === BaseClasses.VEST ||
+                tables.templates.items[i]._parent === "5448bf274bdc2dfc2f8b456a" /*Mob Container ID*/
+            ){
+                if(tables.templates.items[i]._props.Grids[0]._props.filters[0] === undefined){
+                    tables.templates.items[i]._props.Grids[0]._props.filters = compatFiltersElement;
+                }
+            }
+        }
 
         const traderIDs = {
             "mechanic": "5a7c2eca46aef81a7ca2145d",
@@ -79,7 +94,7 @@ class Mod implements IPostAkiLoadMod, IPostDBLoadMod {
         handbook.Items.push(
             {
                 "Id": itemID,
-                "ParentId": "5795f317245977243854e041",
+                "ParentId": "5b5f6fa186f77409407a7eb7",
                 "Price": config.price
             }
         );
@@ -143,6 +158,14 @@ class Mod implements IPostAkiLoadMod, IPostDBLoadMod {
         //make all kappa items discardable so they can't accidentally be deleted
         for (let slot in configSlots){
             tables.templates.items[configSlots[slot]]._props.DiscardLimit = -1;
+        }
+
+        //remove Kotton Beanie from ConflictingItems of Plague Mask so they can both be in case
+        const plagueMaskConflicts = tables.templates.items["5e54f79686f7744022011103"]._props.ConflictingItems
+        for (let conflict in plagueMaskConflicts){
+            if (plagueMaskConflicts[conflict] === "5bd073c986f7747f627e796c"){
+                plagueMaskConflicts.splice(conflict, 1)
+            }
         }
 
         //log success!

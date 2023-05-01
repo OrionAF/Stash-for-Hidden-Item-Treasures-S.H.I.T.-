@@ -23,11 +23,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const BaseClasses_1 = require("C:/snapshot/project/obj/models/enums/BaseClasses");
 const config = __importStar(require("../config/config.json"));
-const logging = config.Logging;
 class Mod {
     constructor() {
-        this.modName = "Duc's Case Framework";
+        this.modName = "Collector's Case";
     }
     postAkiLoad(container) {
         this.container = container;
@@ -43,14 +43,14 @@ class Mod {
         const defaultInventorySlots = tables.templates.items["55d7217a4bdc2d86028b456d"]._props.Slots;
         const itemID = config.id;
         const itemPrefabPath = `${itemID}/case.bundle`;
+        const configSlots = config.InternalSize.slots;
         //do a compatibility correction to make this mod work with other mods with destructive code (cough, SVM, cough)
         //basically just add the filters element back to backpacks and secure containers if they've been removed by other mods
-        const compatFiltersElement = [{
-                "Filter": ["54009119af1c881c07000029"],
-                "ExcludedFilter": [""]
-            }];
+        const compatFiltersElement = [{ "Filter": [BaseClasses_1.BaseClasses.ITEM], "ExcludedFilter": [""] }];
         for (let i in tables.templates.items) {
-            if (tables.templates.items[i]._parent === ("5448e53e4bdc2d60728b4567" || "5448bf274bdc2dfc2f8b456a")) {
+            if (tables.templates.items[i]._parent === BaseClasses_1.BaseClasses.BACKPACK ||
+                tables.templates.items[i]._parent === BaseClasses_1.BaseClasses.VEST ||
+                tables.templates.items[i]._parent === "5448bf274bdc2dfc2f8b456a" /*Mob Container ID*/) {
                 if (tables.templates.items[i]._props.Grids[0]._props.filters[0] === undefined) {
                     tables.templates.items[i]._props.Grids[0]._props.filters = compatFiltersElement;
                 }
@@ -71,13 +71,12 @@ class Mod {
             "dollars": "5696686a4bdc2da3298b456a"
         };
         //clone an item
-        const item = jsonUtil.clone(tables.templates.items["590c2d8786f774245b1f03f3"]);
-        item._parent = "55818b224bdc2dde698b456f";
+        const item = jsonUtil.clone(tables.templates.items["5a9d6d00a2750c5c985b5305"]);
+        item._props.ItemSound = "container_plastic";
         item._id = itemID;
         item._props.Prefab.path = itemPrefabPath;
         //call methods to set the slots up
         item._props.Slots = this.createSlot(container, itemID, config);
-        item._parent = "55818b224bdc2dde698b456f";
         //set external size of the container:
         item._props.Width = config.ExternalSize.width;
         item._props.Height = config.ExternalSize.height;
@@ -90,7 +89,7 @@ class Mod {
         }
         handbook.Items.push({
             "Id": itemID,
-            "ParentId": "5795f317245977243854e041",
+            "ParentId": "5b5f6fa186f77409407a7eb7",
             "Price": config.price
         });
         //push item into equipment slots filters per the config
@@ -137,6 +136,17 @@ class Mod {
         trader.assort.loyal_level_items[itemID] = config.trader_loyalty_level;
         //allow or disallow in secure containers, backpacks, other specific items per the config
         this.allowIntoContainers(itemID, tables.templates.items, config.allow_in_secure_containers, config.allow_in_backpacks, config.case_allowed_in, config.case_disallowed_in);
+        //make all kappa items discardable so they can't accidentally be deleted
+        for (let slot in configSlots) {
+            tables.templates.items[configSlots[slot]]._props.DiscardLimit = -1;
+        }
+        //remove Kotton Beanie from ConflictingItems of Plague Mask so they can both be in case
+        const plagueMaskConflicts = tables.templates.items["5e54f79686f7744022011103"]._props.ConflictingItems;
+        for (let conflict in plagueMaskConflicts) {
+            if (plagueMaskConflicts[conflict] === "5bd073c986f7747f627e796c") {
+                plagueMaskConflicts.splice(conflict, 1);
+            }
+        }
         //log success!
         this.logger.log(`[${this.modName}] : ${config.item_name} loaded! Hooray!`, "green");
     }
@@ -221,13 +231,8 @@ class Mod {
     createSlot(container, itemID, config) {
         const slots = [];
         let configSlots = config.InternalSize["slots"];
-        const inFilt = config.included_filter;
-        const exFilt = config.excluded_filter;
-        let UCcellToApply = config.cell_to_apply_filters_to;
-        const UCinFilt = config.unique_included_filter;
-        const UCexFilt = config.unique_excluded_filter;
         for (let i = 0; i < configSlots.length; i++) {
-            slots.push(this.generateColumn(container, itemID, "column" + i, configSlots[i]));
+            slots.push(this.generateColumn(container, itemID, config.slot_bg + i, configSlots[i]));
         }
         return slots;
     }
